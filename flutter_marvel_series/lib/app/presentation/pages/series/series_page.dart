@@ -1,7 +1,11 @@
+import 'package:connectivity/connectivity.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_marvel_series/app/data/interceptor/dio_connectivity_request_retrier.dart';
 import 'package:flutter_marvel_series/app/data/interceptor/models/series.dart';
 import 'package:flutter_marvel_series/app/data/interceptor/repositories/series_repository.dart';
+import 'package:flutter_marvel_series/app/data/interceptor/retry_interceptor.dart';
 
 import 'package:flutter_marvel_series/app/presentation/pages/series/series_item.dart';
 import 'package:flutter_marvel_series/app/presentation/utils/convert_string_Upper.dart';
@@ -69,6 +73,7 @@ class _SeriesPageState extends State<SeriesPage> implements SeriesView {
   void initState() {
     super.initState();
     this.repo = SeriesRepository(this);
+
     repo.getSeries().then((value) {
       if (mounted)
         setState(() {

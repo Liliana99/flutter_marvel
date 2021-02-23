@@ -39,15 +39,17 @@ class _SerieDetailState extends State<SerieDetail> implements Methods {
   @override
   Widget build(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.black,
-        body: NestedScrollView(
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        automaticallyImplyLeading: true,
+      ),
+      backgroundColor: Colors.black,
+      body: SafeArea(
+        child: NestedScrollView(
           headerSliverBuilder: (BuildContext context, bool innerBoxScrolled) {
             return <Widget>[
               _buildImage(context),
-
-              //createButtonRefresh(),
             ];
           },
           body: _data
@@ -58,16 +60,6 @@ class _SerieDetailState extends State<SerieDetail> implements Methods {
               : Center(
                   child: CircularProgressIndicator(),
                 ),
-        ),
-      ),
-    );
-  }
-
-  Widget _text() {
-    return SliverToBoxAdapter(
-      child: Center(
-        child: Container(
-          child: Text('Creators', style: TextStyle(color: Colors.white)),
         ),
       ),
     );

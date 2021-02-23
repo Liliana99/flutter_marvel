@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_marvel_series/app/presentation/pages/series/series_page.dart';
 
-import 'package:flutter_marvel_series/app/presentation/utils/get_size_screen.dart';
-
 class SplashPage extends StatefulWidget {
   SplashPage({Key key}) : super(key: key);
 
@@ -42,26 +40,26 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.black,
-        body: Padding(
-          padding: const EdgeInsets.all(30),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Flexible(
-                child: SizedBox(
-                  height: 30,
-                ),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+      ),
+      backgroundColor: Colors.black,
+      body: SafeArea(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Flexible(
+              child: SizedBox(
+                height: 5.0,
               ),
-              Container(
-                child: Text('SERIES',
-                    style: TextStyle(color: Colors.green, fontSize: 30)),
-              ),
-              Expanded(child: Image.asset('assets/images/giphy_marvel.gif')),
-            ],
-          ),
+            ),
+            Container(
+              child: Text('SERIES',
+                  style: TextStyle(color: Colors.green, fontSize: 30)),
+            ),
+            Expanded(child: Image.asset('assets/images/giphy_marvel.gif')),
+          ],
         ),
       ),
     );

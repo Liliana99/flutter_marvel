@@ -6,8 +6,7 @@ import 'app/presentation/pages/splash/splash_page.dart';
 import 'app/presentation/utils/i18n.dart';
 
 void main() {
-  //WidgetsFlutterBinding.ensureInitialized();
-  // Inicialización de repositorios
+  WidgetsFlutterBinding.ensureInitialized();
 
   runApp(
     EasyLocalization(
