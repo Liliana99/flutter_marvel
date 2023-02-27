@@ -1,10 +1,9 @@
 import 'creators_detail.dart';
 
 class SerieResponse {
-  Data data;
-
   SerieResponse(this.data);
-
+  final Data data;
+  
   SerieResponse.fromJson(Map<String, dynamic> json) {
     data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
@@ -19,9 +18,8 @@ class SerieResponse {
 }
 
 class CreatorsResponse {
-  Data2 data;
-
   CreatorsResponse(this.data);
+  final Data2 data;
 
   CreatorsResponse.fromJson(Map<String, dynamic> json) {
     data = json['data'] != null ? Data2.fromJson(json['data']) : null;
@@ -37,12 +35,11 @@ class CreatorsResponse {
 }
 
 class Data {
-  int offset;
-  int limit;
-  int total;
-  int count;
-  List<Serie> series;
-
+  final List<Serie> series;
+  final int offset;
+  final int limit;
+  final int total;
+  final int count;
   Data({this.offset, this.limit, this.total, this.count, this.series});
 
   Data.fromJson(Map<String, dynamic> json) {
@@ -72,11 +69,11 @@ class Data {
 }
 
 class Data2 {
-  int offset;
-  int limit;
-  int total;
-  int count;
-  List<CreatorsDetail> creators;
+  final int offset;
+  final int limit;
+  final int total;
+  final int count;
+  final List<CreatorsDetail> creators;
 
   Data2({this.offset, this.limit, this.total, this.count, this.creators});
 
@@ -107,16 +104,6 @@ class Data2 {
 }
 
 class Serie {
-  int id;
-  String title;
-  String rating;
-  String description;
-  int pageCount;
-  int startYear;
-  int endYear;
-  Thumbnail thumbnail;
-  Creators creators;
-
   Serie(
       {this.id,
       this.title,
@@ -127,6 +114,18 @@ class Serie {
       this.endYear,
       this.thumbnail,
       this.creators});
+  
+  final int id;
+  final String title;
+  final String rating;
+  final String description;
+  final int pageCount;
+  final int startYear;
+  final int endYear;
+  final Thumbnail thumbnail;
+  final Creators creators;
+
+  
 
   Serie.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -158,10 +157,9 @@ class Serie {
 }
 
 class Thumbnail {
-  String path;
-  String extension;
-
   Thumbnail({this.path, this.extension});
+  final String path;
+  final String extension;
 
   Thumbnail.fromJson(Map<String, dynamic> json) {
     path = json['path'];
@@ -177,9 +175,10 @@ class Thumbnail {
 }
 
 class Images {
-  String path;
-  String extension;
   Images({this.path, this.extension});
+  final String path;
+  final String extension;
+  
   Images.fromJson(Map<String, dynamic> json) {
     path = json['path'];
     extension = json['extension'];
@@ -194,11 +193,12 @@ class Images {
 }
 
 class Creators {
-  String collection;
-  int available;
-  List<Items> items;
-  ThumbnailCrerator thumbail;
   Creators({this.collection, this.items, this.available, this.thumbail});
+  final String collection;
+  final int available;
+  final List<Items> items;
+  final ThumbnailCrerator thumbail;
+  
 
   Creators.fromJson(Map<String, dynamic> json) {
     collection = json['collectionURI'];
@@ -226,10 +226,9 @@ class Creators {
 }
 
 class ThumbnailCrerator {
-  String path;
-  String extension;
-
   ThumbnailCrerator({this.path, this.extension});
+  final String path;
+  final String extension;
 
   ThumbnailCrerator.fromJson(Map<String, dynamic> json) {
     path = json['path'];
@@ -245,11 +244,10 @@ class ThumbnailCrerator {
 }
 
 class Items {
-  String uri;
-  String name;
-  String role;
-
   Items({this.uri, this.name, this.role});
+  final String uri;
+  final String name;
+  final String role;
 
   Items.fromJson(Map<String, dynamic> json) {
     uri = json['resourceURI'];
