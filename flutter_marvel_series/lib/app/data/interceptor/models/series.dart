@@ -2,119 +2,154 @@ import 'creators_detail.dart';
 
 class SerieResponse {
   SerieResponse(this.data);
+
   final Data data;
-  
-  SerieResponse.fromJson(Map<String, dynamic> json) {
-    data = json['data'] != null ? Data.fromJson(json['data']) : null;
+
+  factory SerieResponse.fromJson(Map<String, dynamic> json) {
+    if (json == null) {
+      throw ArgumentError('json must not be null');
+    }
+    return SerieResponse(Data.fromJson(json['data'] ?? {}));
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = {};
     if (this.data != null) {
       data['data'] = this.data.toJson();
     }
     return data;
+  }
+
+  factory SerieResponse.fromMap(Map<String, dynamic> map) {
+    if (map == null) {
+      throw ArgumentError('map must not be null');
+    }
+    return SerieResponse(Data.fromMap(map['data'] ?? {}));
   }
 }
 
+
 class CreatorsResponse {
   CreatorsResponse(this.data);
+
   final Data2 data;
 
-  CreatorsResponse.fromJson(Map<String, dynamic> json) {
-    data = json['data'] != null ? Data2.fromJson(json['data']) : null;
+  factory CreatorsResponse.fromJson(Map<String, dynamic> json) {
+    if (json == null) {
+      throw ArgumentError('json must not be null');
+    }
+    return CreatorsResponse(Data2.fromJson(json['data'] ?? {}));
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = {};
     if (this.data != null) {
       data['data'] = this.data.toJson();
     }
     return data;
+  }
+
+  factory CreatorsResponse.fromMap(Map<String, dynamic> map) {
+    if (map == null) {
+      throw ArgumentError('map must not be null');
+    }
+    return CreatorsResponse(Data2.fromMap(map['data'] ?? {}));
   }
 }
 
 class Data {
+  Data({this.offset, this.limit, this.total, this.count, this.series});
   final List<Serie> series;
   final int offset;
   final int limit;
   final int total;
   final int count;
-  Data({this.offset, this.limit, this.total, this.count, this.series});
 
-  Data.fromJson(Map<String, dynamic> json) {
-    offset = json['offset'];
-    limit = json['limit'];
-    total = json['total'];
-    count = json['count'];
-    if (json['results'] != null) {
-      series = List<Serie>();
-      json['results'].forEach((v) {
-        series.add(Serie.fromJson(v));
-      });
+  factory Data.fromJson(Map<String, dynamic> json) {
+    if (json == null) {
+      throw ArgumentError('json must not be null');
     }
+    final seriesJson = json['series'] as List;
+    final series = seriesJson != null
+        ? seriesJson.map((serieJson) => Serie.fromJson(serieJson)).toList()
+        : null;
+    return Data(
+      offset: json['offset'],
+      limit: json['limit'],
+      total: json['total'],
+      count: json['count'],
+      series: series,
+    );
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['offset'] = this.offset;
-    data['limit'] = this.limit;
-    data['total'] = this.total;
-    data['count'] = this.count;
-    if (this.series != null) {
-      data['results'] = this.series.map((v) => v.toJson()).toList();
+    final data = <String, dynamic>{
+      'offset': offset,
+      'limit': limit,
+      'total': total,
+      'count': count,
+    };
+    if (series != null) {
+      data['series'] = series.map((serie) => serie.toJson()).toList();
     }
     return data;
   }
 }
 
 class Data2 {
-  final int offset;
-  final int limit;
-  final int total;
-  final int count;
-  final List<CreatorsDetail> creators;
+   Data2({
+    required int offset,
+    required int limit,
+    required int total,
+    required int count,
+    required List<CreatorsDetail> creators,
+  })  : _offset = offset,
+        _limit = limit,
+        _total = total,
+        _count = count,
+        _creators = creators;
 
-  Data2({this.offset, this.limit, this.total, this.count, this.creators});
+  final int _offset;
+  final int _limit;
+  final int _total;
+  final int _count;
+  final List<CreatorsDetail> _creators;
+  factory Data2.fromApiResponse(Map<String, dynamic> json) {
+    final List<dynamic>? results = json['results'];
+    final creators = results?.map((v) => CreatorsDetail.fromJson(v)).toList() ?? [];
 
-  Data2.fromJson(Map<String, dynamic> json) {
-    offset = json['offset'];
-    limit = json['limit'];
-    total = json['total'];
-    count = json['count'];
-    if (json['results'] != null) {
-      creators = List<CreatorsDetail>();
-      json['results'].forEach((v) {
-        creators.add(CreatorsDetail.fromJson(v));
-      });
-    }
+    return Data2(
+      offset: json['offset'] ?? 0,
+      limit: json['limit'] ?? 0,
+      total: json['total'] ?? 0,
+      count: json['count'] ?? 0,
+      creators: creators,
+    );
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['offset'] = this.offset;
-    data['limit'] = this.limit;
-    data['total'] = this.total;
-    data['count'] = this.count;
-    if (this.creators != null) {
-      data['results'] = this.creators.map((v) => v.toJson()).toList();
-    }
-    return data;
+    return {
+      'offset': _offset,
+      'limit': _limit,
+      'total': _total,
+      'count': _count,
+      'creators': _creators.map((creator) => creator.toJson()).toList(),
+    };
   }
+
+  int get offset => _offset;
+
+  int get limit => _limit;
+
+  int get total => _total;
+
+  int get count => _count;
+
+  List<CreatorsDetail> get creators => _creators;
 }
 
+
 class Serie {
-  Serie(
-      {this.id,
-      this.title,
-      this.rating,
-      this.description,
-      this.pageCount,
-      this.startYear,
-      this.endYear,
-      this.thumbnail,
-      this.creators});
-  
   final int id;
   final String title;
   final String rating;
@@ -125,80 +160,101 @@ class Serie {
   final Thumbnail thumbnail;
   final Creators creators;
 
-  
+  Serie({
+    required this.id,
+    required this.title,
+    required this.rating,
+    required this.description,
+    required this.pageCount,
+    required this.startYear,
+    required this.endYear,
+    required this.thumbnail,
+    required this.creators,
+  });
 
-  Serie.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    title = json['title'];
-    rating = json['rating'];
-    description = json['description'];
-    pageCount = json['pageCount'];
-    startYear = json['startYear'];
-    endYear = json['endYear'];
-    creators =
-        json['creators'] != null ? Creators.fromJson(json['creators']) : null;
-
-    thumbnail = json['thumbnail'] != null
-        ? Thumbnail.fromJson(json['thumbnail'])
-        : null;
+  factory Serie.fromJson(Map<String, dynamic> json) {
+    return Serie(
+      id: json['id'] ?? 0,
+      title: json['title'] ?? '',
+      rating: json['rating'] ?? '',
+      description: json['description'] ?? '',
+      pageCount: json['pageCount'] ?? 0,
+      startYear: json['startYear'] ?? 0,
+      endYear: json['endYear'] ?? 0,
+      thumbnail: json['thumbnail'] != null ? Thumbnail.fromJson(json['thumbnail']) : Thumbnail(),
+      creators: json['creators'] != null ? Creators.fromJson(json['creators']) : Creators(),
+    );
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['title'] = this.title;
-    data['rating'] = this.rating;
-    data['description'] = this.description;
-    data['pageCount'] = this.pageCount;
-    data['startYear'] = this.startYear;
-    data['endYear'] = this.endYear;
-    return data;
+    return {
+      'id': id,
+      'title': title,
+      'rating': rating,
+      'description': description,
+      'pageCount': pageCount,
+      'startYear': startYear,
+      'endYear': endYear,
+      'thumbnail': thumbnail.toJson(),
+      'creators': creators.toJson(),
+    };
   }
 }
 
 class Thumbnail {
-  Thumbnail({this.path, this.extension});
+  Thumbnail({
+    required this.path,
+    required this.extension,
+  });
   final String path;
   final String extension;
 
-  Thumbnail.fromJson(Map<String, dynamic> json) {
-    path = json['path'];
-    extension = json['extension'];
+  factory Thumbnail.fromJson(Map<String, dynamic> json) {
+    return Thumbnail(
+      path: json['path'] ?? '',
+      extension: json['extension'] ?? '',
+    );
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['path'] = this.path;
-    data['extension'] = this.extension;
-    return data;
+    return {
+      'path': path,
+      'extension': extension,
+    };
   }
 }
 
 class Images {
-  Images({this.path, this.extension});
   final String path;
   final String extension;
-  
-  Images.fromJson(Map<String, dynamic> json) {
-    path = json['path'];
-    extension = json['extension'];
+
+  Images({
+    required this.path,
+    required this.extension,
+  });
+
+  factory Images.fromJson(Map<String, dynamic> json) {
+    return Images(
+      path: json['path'] ?? '',
+      extension: json['extension'] ?? '',
+    );
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['path'] = this.path;
-    data['extension'] = this.extension;
-    return data;
+    return {
+      'path': path,
+      'extension': extension,
+    };
   }
 }
 
+
 class Creators {
-  Creators({this.collection, this.items, this.available, this.thumbail});
+  Creators({this.collection, this.items, this.available, this.thumbnail});
   final String collection;
   final int available;
   final List<Items> items;
-  final ThumbnailCrerator thumbail;
-  
+  final ThumbnailCreator thumbnail;
 
   Creators.fromJson(Map<String, dynamic> json) {
     collection = json['collectionURI'];
@@ -209,10 +265,11 @@ class Creators {
         items.add(Items.fromJson(s));
       });
     }
-    thumbail = json['thumbnail'] != null
-        ? ThumbnailCrerator.fromJson(json['thumbnail'])
+    thumbnail = json['thumbnail'] != null
+        ? ThumbnailCreator.fromJson(json['thumbnail'])
         : null;
   }
+
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['resourceURI'] = this.collection;
@@ -220,17 +277,16 @@ class Creators {
     if (this.items != null) {
       data['items'] = this.items.map((v) => v.toJson()).toList();
     }
-
     return data;
   }
 }
 
-class ThumbnailCrerator {
-  ThumbnailCrerator({this.path, this.extension});
+class ThumbnailCreator {
+  ThumbnailCreator({this.path, this.extension});
   final String path;
   final String extension;
 
-  ThumbnailCrerator.fromJson(Map<String, dynamic> json) {
+  ThumbnailCreator.fromJson(Map<String, dynamic> json) {
     path = json['path'];
     extension = json['extension'];
   }
@@ -243,23 +299,28 @@ class ThumbnailCrerator {
   }
 }
 
+
 class Items {
-  Items({this.uri, this.name, this.role});
-  final String uri;
+  Items({this.resourceURI, this.name, this.role});
+
+  final String resourceURI;
   final String name;
   final String role;
 
-  Items.fromJson(Map<String, dynamic> json) {
-    uri = json['resourceURI'];
-    name = json['name'];
-    role = json['role'];
+  factory Items.fromJson(Map<String, dynamic> json) {
+    return Items(
+      resourceURI: json['resourceURI'],
+      name: json['name'],
+      role: json['role'],
+    );
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['resourceURI'] = this.uri;
-    data['name'] = this.name;
-    data['role'] = this.role;
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['resourceURI'] = resourceURI;
+    data['name'] = name;
+    data['role'] = role;
     return data;
   }
 }
+
